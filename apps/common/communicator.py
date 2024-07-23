@@ -2,7 +2,6 @@ from django.conf import settings
 from rest_framework.authentication import get_authorization_header
 
 from apps.common.helpers import make_http_request
-from apps.tenant_service.middlewares import get_current_tenant_details
 
 
 class Communicator:
@@ -15,20 +14,8 @@ class Communicator:
     @staticmethod
     def get_host(service=None, host=None):
         """Returns service host."""
-
-        tenant_details = get_current_tenant_details()
-        if service == "IDP":
-            service_host = settings.IDP_CONFIG["host"]
-        elif service == "YAKSHA":
-            service_host = tenant_details.get("yaksha_host", None) or settings.YAKSHA_CONFIG["host"]
-        elif service == "VIRTUTOR":
-            service_host = tenant_details.get("virtutor_host", None) or settings.VIRTUTOR_CONFIG["host"]
-        elif service == "CCMS":
-            service_host = settings.CCMS_CONFIG["host"]
-        elif service == "WECP":
-            service_host = settings.WECP_CONFIG["host"]
-        elif service == "YAKSHA_ONE":
-            service_host = settings.YAKSHA_CONFIG["one_host"]
+        if service == "WHATSAPP":
+            service_host = settings.WHATSAPP_SERVER_URL
         else:
             service_host = host
 
@@ -40,14 +27,12 @@ class Communicator:
 
         headers["Content-Type"] = "application/json"
 
-        if service in ["IDP", "VIRTUTOR", "YAKSHA"]:
-            headers["Authorization"] = f"Bearer {auth_token}"
-        elif service == "CCMS":
-            headers["Authorization"] = f"CcmsAccessKey {settings.CCMS_CONFIG['access_token']}"
-        elif service == "WECP":
-            headers["x-api-key"] = auth_token
+        if service=="WHATSAPP":
+            headers["apiKey"] = settings.WHATSAPP_API_KEY
+            headers["apiSecret"] = settings.WHATSAPP_API_SECRET
         else:
-            headers["Authorization"] = f"Bearer {auth_token}"
+            """your logic here"""
+            pass
 
         return headers
 

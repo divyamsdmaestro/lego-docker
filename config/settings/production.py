@@ -10,7 +10,6 @@ from sentry_sdk.integrations.redis import RedisIntegration
 from .base import *  # noqa: F403
 from .base import DATABASES
 from .base import INSTALLED_APPS
-from .base import SPECTACULAR_SETTINGS
 from .base import env
 
 # GENERAL
@@ -195,6 +194,12 @@ sentry_sdk.init(
     traces_sample_rate=env.float("SENTRY_TRACES_SAMPLE_RATE", default=0.0),
 )
 
+# Whatsapp Credentials
+# -------------------------------------------------------------------------------
+WHATSAPP_API_KEY = env("WHATSAPP_API_KEY")
+WHATSAPP_API_SECRET = env("WHATSAPP_API_SECRET")
+WHATSAPP_CHANNEL_ID = env("WHATSAPP_CHANNEL_ID")
+WHATSAPP_SERVER_URL = env("WHATSAPP_SERVER_URL")
 # django-rest-framework
 # -------------------------------------------------------------------------------
 # Tools that generate code samples can use SERVERS to point to the correct domain
