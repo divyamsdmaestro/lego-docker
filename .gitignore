@@ -272,7 +272,7 @@ tags
 dump.rdb
 
 ### Project template
-lego_deck/media/
+apps/media/
 
 .pytest_cache/
 .ipython/
